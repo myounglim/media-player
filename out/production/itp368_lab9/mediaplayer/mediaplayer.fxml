@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<GridPane hgap="10" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mediaplayer.MediaController">
+
+   <children>
+      <MenuBar prefHeight="32.0" prefWidth="586.0" GridPane.hgrow="ALWAYS">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <HBox prefHeight="400.0" GridPane.rowIndex="1">
+         <children>
+            <ListView fx:id="listView" onMouseClicked="#onListClicked" prefWidth="225.0">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Album One" />
+                        <String fx:value="Album Two" />
+                        <String fx:value="Album Three" />
+                        <String fx:value="Album Four" />
+                        <String fx:value="Album Five" />
+                        <String fx:value="Album One" />
+                        <String fx:value="Album Two" />
+                        <String fx:value="Album Three" />
+                        <String fx:value="Album Four" />
+                        <String fx:value="Album Five" />
+                        <String fx:value="Album One" />
+                        <String fx:value="Album Two" />
+                        <String fx:value="Album Three" />
+                        <String fx:value="Album Four" />
+                        <String fx:value="Album Five" />
+                    </FXCollections>
+                </items>
+            </ListView>
+            <ImageView fx:id="main_image" fitHeight="400.0" fitWidth="375.0" pickOnBounds="true">
+               <image>
+                  <Image url="@images/space-oddity.jpg" />
+               </image>
+            </ImageView>
+            <VBox fx:id="right_pane" prefWidth="225.0" spacing="40.0">
+               <children>
+                  <Label fx:id="titleLabel" text="Space Oddity">
+                     <font>
+                        <Font name="Droid Serif Bold Italic" size="18.0" />
+                     </font></Label>
+                  <Label fx:id="artistLabel" text="David Bowie">
+                     <font>
+                        <Font name="Droid Serif Bold Italic" size="18.0" />
+                     </font></Label>
+                   <Label fx:id="genreLabel" text="Classic Rock">
+                     <font>
+                           <Font name="Droid Serif Bold Italic" size="18.0" />
+                       </font></Label>
+                   <Label fx:id="lengthLabel" text="3min 52sec">
+                     <font>
+                        <Font name="Droid Serif Bold Italic" size="18.0" />
+                     </font></Label>
+                   <Label fx:id="dateLabel" text="1969-07-11">
+                       <font>
+                           <Font name="Droid Serif Bold Italic" size="18.0" />
+                       </font></Label>
+                   <Label fx:id="ratingLabel" text="3 star">
+                       <font>
+                           <Font name="Droid Serif Bold Italic" size="18.0" />
+                       </font></Label>
+               </children>
+               <padding>
+                  <Insets left="5.0" top="5.0" />
+               </padding>
+            </VBox>
+         </children></HBox>
+      <GridPane fx:id="bottom_pane" GridPane.rowIndex="4">
+         <children>
+            <HBox alignment="CENTER" prefHeight="85.0" GridPane.hgrow="ALWAYS">
+                <Label fx:id="bot_title" text="Space Oddity" textFill="#e2e3e8">
+                    <font>
+                        <Font name="Comic Sans MS Bold" size="48.0" />
+                    </font>
+                  </Label>
+            </HBox>
+             <HBox alignment="CENTER" prefHeight="85.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+                 <Label fx:id="bot_author" text="David Bowie" textFill="#cad5ee">
+                     <font>
+                         <Font name="Comic Sans MS Bold" size="24.0" />
+                     </font>
+                  <padding>
+                     <Insets left="10.0" right="10.0" />
+                  </padding></Label>
+                 <Label fx:id="bot_length" text="3min 52sec" textFill="#ebd7d7">
+                  <font>
+                     <Font name="Comic Sans MS" size="24.0" />
+                  </font>
+                  <padding>
+                     <Insets left="20.0" right="20.0" />
+                  </padding></Label>
+                 <ImageView fx:id="bot_rating_img" fitHeight="40.0" fitWidth="175.0" pickOnBounds="true">
+                     <image>
+                         <Image url="@images/3-stars.png" />
+                     </image>
+                  <HBox.margin>
+                     <Insets left="10.0" right="10.0" />
+                  </HBox.margin>
+                 </ImageView>
+             </HBox>
+            <Slider fx:id="progressSlider" layoutX="78.0" layoutY="112.0" prefHeight="15.0" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="10.0" top="15.0" />
+               </GridPane.margin>
+               <padding>
+                  <Insets left="15.0" right="15.0" />
+               </padding></Slider>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" GridPane.rowIndex="3">
+               <children>
+                  <ImageView fx:id="rewindButton" fitHeight="76.0" fitWidth="65.0" onMouseClicked="#onRewindClicked" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/fast-rewind.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="playButton" fitHeight="74.0" fitWidth="70.0" onMouseClicked="#onPlayClicked" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/playbutton.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="fastButton" fitHeight="76.0" fitWidth="65.0" onMouseClicked="#onFastClicked" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/fast-forward.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="48.0" prefWidth="433.0" GridPane.rowIndex="4" GridPane.valignment="BASELINE">
+               <children>
+                  <ImageView fx:id="shuffleButton" fitHeight="70.0" fitWidth="46.0" onMouseClicked="#onShuffleClicked" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/shufflebutton.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label fx:id="shuffleLabel" prefHeight="46.0" prefWidth="50.0" text="Off" textFill="#f2e3e3">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <ImageView fx:id="repeatButton" fitHeight="92.0" fitWidth="45.0" onMouseClicked="#onRepeatClicked" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/repeatbutton.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label fx:id="repeatLabel" prefHeight="44.0" prefWidth="50.0" text="Off" textFill="#f5e2e2">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Slider fx:id="volumeSlider" orientation="VERTICAL">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Slider>
+                  <Label fx:id="volumeLabel" prefHeight="44.0" prefWidth="50.0" text="0" textFill="#f2e1e1">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+         <columnConstraints>
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+      </GridPane>
+   </children>
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
+    <stylesheets>
+        <URL value="@css/main.css" />
+    </stylesheets>
+</GridPane>

@@ -1,0 +1,26 @@
+#back_button {
+	-fx-graphic: url("../images/backbutton.png");
+	-fx-max-width: 100px;
+}
+
+#bottom_pane {
+    -fx-background-color: #708090;
+}
+
+#right_pane {
+    -fx-background-color: #e6e6fa;
+}
+
+#listView .list-cell:even {
+    -fx-background-color: #e6e6fa;
+    -fx-text-fill: #778899;
+}
+
+#listView .list-cell:odd {
+    -fx-background-color: #d8bfd8;
+    -fx-text-fill: #778899;
+}
+
+#listView .list-cell:hover {
+    -fx-background-color: #faf0e6
+}
