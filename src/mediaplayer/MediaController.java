@@ -1,5 +1,6 @@
 package mediaplayer;
 
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,16 +8,19 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Slider;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
+import javafx.util.Pair;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -119,6 +123,7 @@ public class MediaController implements Initializable{
     @FXML
     protected void onPlayClicked(MouseEvent event) {
         if (!isPlaying) {
+            if (progressSlider.getValue() == 100.0) progressSlider.adjustValue(0);
             playButton.setImage(new Image("mediaplayer/images/pause-button.png"));
             isPlaying = true;
             myTimer = new Timer();
@@ -156,6 +161,144 @@ public class MediaController implements Initializable{
     protected void onFastClicked(MouseEvent event) {
         for (int i = 0; i < 3; i++)
             progressSlider.increment();
+    }
+
+    @FXML
+    protected void onAboutClicked(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Media Player Info");
+        alert.setHeaderText(null);
+        String s = "Click on a song on the playlist to update the currently playing info!\n";
+        s += "The controls on the lower pane are for playing/rewind/fast-forward and repeat/shuffle/volume";
+        alert.setContentText(s);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+
+        alert.show();
+    }
+
+    /**
+     * Credit to http://code.makery.ch/blog/javafx-dialogs-official/ for most of the setup code for JavaFX dialogs
+     * @param event
+     */
+    @FXML
+    protected void onAddNewClicked(ActionEvent event) {
+        // Create the custom dialog.
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("New Song");
+        dialog.setHeaderText("Add A New Song");
+
+        // Set the icon (must be included in the project).
+        //dialog.setGraphic(new ImageView(this.getClass().getResource("login.png").toString()));
+
+        // Set the button types.
+        ButtonType loginButtonType = new ButtonType("Add", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+        // Create the username and password labels and fields.
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField username = new TextField();
+        username.setPromptText("Title");
+        TextField password = new TextField();
+        password.setPromptText("Artist");
+        TextField genreField = new TextField();
+        genreField.setPromptText("Genre");
+        TextField minField = new TextField();
+        minField.setPromptText("Minutes (0-9)");
+        TextField secField = new TextField();
+        secField.setPromptText("Seconds (0-60)");
+        final ComboBox comboBox = new ComboBox();
+        comboBox.getItems().addAll(
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+        );
+        comboBox.getSelectionModel().select(3);
+
+        grid.add(new Label("Title:"), 0, 0);
+        grid.add(username, 1, 0);
+        grid.add(new Label("Artist:"), 0, 1);
+        grid.add(password, 1, 1);
+        grid.add(new Label("Genre:"), 0, 2);
+        grid.add(genreField, 1, 2);
+        grid.add(new Label("Length:"), 0, 3);
+        grid.add(minField, 1, 3);
+        grid.add(secField, 2, 3);
+        grid.add(new Label("Rating:"), 0, 4);
+        grid.add(comboBox, 1, 4);
+
+        // Enable/Disable login button depending on whether a username was entered.
+        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        loginButton.setDisable(true);
+
+        // Do some validation (using the Java 8 lambda syntax).
+//        username.textProperty().addListener((observable, oldValue, newValue) -> {
+//            loginButton.setDisable(newValue.trim().isEmpty());
+//        });
+
+        secField.textProperty().addListener((observable, oldValue, newValue) -> {
+            loginButton.setDisable(newValue.trim().isEmpty());
+        });
+
+        dialog.getDialogPane().setContent(grid);
+
+        // Request focus on the username field by default.
+        Platform.runLater(() -> username.requestFocus());
+
+        // Convert the result to a username-password-pair when the login button is clicked.
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                String title = username.getText();
+                String artist = password.getText();
+                String genre = genreField.getText();
+                String min = minField.getText();
+                String seconds = secField.getText();
+                String rating = comboBox.getSelectionModel().getSelectedItem().toString();
+                if (validInput(min, seconds, title, artist, genre)) {
+                    String length = min + "." +  seconds;
+                    double convertedDouble = Double.parseDouble(length);
+                    int convertedRating = Integer.parseInt(rating);
+                    SongModel newSong = new SongModel(title, artist, genre, convertedDouble, LocalDate.now(), convertedRating,
+                            "mediaplayer/images/random-img.jpg");
+                    listView.getItems().add(newSong);
+                } else {
+                    SongModel newSong = new SongModel("Try Again", "Bad Input", "Default Values", 3.50, LocalDate.now(), 3,
+                            "mediaplayer/images/random-img.jpg");
+                    listView.getItems().add(newSong);
+                }
+                return new Pair<>(username.getText(), password.getText());
+            }
+            return null;
+        });
+
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+
+        result.ifPresent(usernamePassword -> {
+            System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
+        });
+    }
+
+    private boolean validInput(String min, String secs, String title, String artist, String genre) {
+        try {
+            int minutes = Integer.parseInt(min);
+            int seconds = Integer.parseInt(secs);
+            if (minutes < 0 || minutes > 9) return false;
+            if (title.isEmpty() || artist.isEmpty() || genre.isEmpty()) return false;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
+    }
+
+    @FXML
+    protected void onExitClicked(ActionEvent event) {
+        Platform.exit();
     }
 
 

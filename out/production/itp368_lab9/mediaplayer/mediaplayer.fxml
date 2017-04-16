@@ -26,17 +26,17 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem fx:id="exit_menu" mnemonicParsing="false" onAction="#onExitClicked" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+              <MenuItem fx:id="add_new" mnemonicParsing="false" onAction="#onAddNewClicked" text="Add New" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem fx:id="about_menu" mnemonicParsing="false" onAction="#onAboutClicked" text="About" />
             </items>
           </Menu>
         </menus>
